@@ -1,15 +1,15 @@
-FROM golang:1.21.3
 
-WORKDIR /app
+FROM golang:latest
 
-COPY . .
+WORKDIR /usr/src/app
 
-RUN go mod download
+#RUN go mod init docker-final-main
+COPY . ./
 
-ENV CGO_ENABLED 0
-ENV GOOS linux
-ENV GOARCH amd64
+RUN go mod tidy
+RUN go mod download 
 
-RUN go build -o /sprint_12
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /sprint_12
+RUN chmod +x ./
 
 CMD ["/sprint_12"]
